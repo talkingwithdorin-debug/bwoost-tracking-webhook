@@ -1,0 +1,15 @@
+{
+  "name": "bwoost-tracking-webhook",
+  "version": "1.0.0",
+  "description": "Rewrites Shopify fulfillment tracking URLs to point at bwoost.co/pages/tracking",
+  "main": "tracking-webhook.js",
+  "scripts": {
+    "start": "node tracking-webhook.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
