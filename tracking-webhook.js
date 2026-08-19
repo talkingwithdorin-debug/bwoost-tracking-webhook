@@ -39,9 +39,12 @@ function isValidShopifyWebhook(req) {
 }
 
 app.post('/webhooks/fulfillment-created', async (req, res) => {
+  console.log(`Webhook received at ${new Date().toISOString()}`);
   if (!isValidShopifyWebhook(req)) {
+    console.log('Signature check FAILED — request rejected.');
     return res.status(401).send('Invalid signature');
   }
+  console.log('Signature check passed.');
 
   // Ack immediately — Shopify retries (and can eventually drop the
   // subscription) if it doesn't get a fast 200.
