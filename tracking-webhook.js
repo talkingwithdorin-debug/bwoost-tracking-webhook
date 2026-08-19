@@ -20,7 +20,7 @@ app.use(express.json({
 
 const SHOPIFY_STORE_DOMAIN = process.env.SHOPIFY_STORE_DOMAIN;
 const SHOPIFY_ACCESS_TOKEN = process.env.SHOPIFY_ACCESS_TOKEN;
-const SHOPIFY_WEBHOOK_SECRET = process.env.SHOPIFY_WEBHOOK_SECRET;
+const SHOPIFY_WEBHOOK_SECRET = (process.env.SHOPIFY_WEBHOOK_SECRET || '').trim();
 const API_VERSION = '2026-07';
 const TRACKING_BASE_URL = 'https://bwoost.co/pages/tracking';
 
