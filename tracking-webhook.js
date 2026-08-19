@@ -26,7 +26,10 @@ const TRACKING_BASE_URL = 'https://bwoost.co/pages/tracking';
 
 function isValidShopifyWebhook(req) {
   const hmacHeader = req.get('X-Shopify-Hmac-Sha256');
-  if (!hmacHeader || !req.rawBody || !SHOPIFY_WEBHOOK_SECRET) return false;
+  if (!hmacHeader || !req.rawBody || !SHOPIFY_WEBHOOK_SECRET) {
+    console.log('Missing piece — hmacHeader present:', !!hmacHeader, '| rawBody present:', !!req.rawBody, '| secret set:', !!SHOPIFY_WEBHOOK_SECRET, '| secret length:', SHOPIFY_WEBHOOK_SECRET ? SHOPIFY_WEBHOOK_SECRET.length : 0);
+    return false;
+  }
 
   const digest = crypto
     .createHmac('sha256', SHOPIFY_WEBHOOK_SECRET)
@@ -35,7 +38,11 @@ function isValidShopifyWebhook(req) {
 
   const a = Buffer.from(digest);
   const b = Buffer.from(hmacHeader);
-  return a.length === b.length && crypto.timingSafeEqual(a, b);
+  const match = a.length === b.length && crypto.timingSafeEqual(a, b);
+
+  console.log('Signature match:', match, '| secret length used:', SHOPIFY_WEBHOOK_SECRET.length, '| digest length:', digest.length, '| header length:', hmacHeader.length);
+
+  return match;
 }
 
 app.post('/webhooks/fulfillment-created', async (req, res) => {
